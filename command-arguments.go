@@ -2,6 +2,7 @@ package main
 
 // CommandArguments type
 type CommandArguments struct {
-	commandName  string
-	commandFlags *CommandFlags
+	commandName       string
+	commandParameters []string
+	commandFlags      *CommandFlags
 }

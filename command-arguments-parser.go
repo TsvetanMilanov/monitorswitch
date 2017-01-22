@@ -7,12 +7,12 @@ func ParseCommandArguments(arguments []string) *CommandArguments {
 	var commandFlags = new(CommandFlags)
 	var commandArguments = new(CommandArguments)
 
-	// The first command argument is the binary name.
+	// The first command argument is the binary name
 	for i := 1; i < len(arguments); i++ {
 		var commandArgument = arguments[i]
 
 		if commandArgument[0] == '-' {
-			// Command flag.
+			// Command flag
 			var flagName = strings.TrimLeft(commandArgument, "-")
 			switch flagName {
 			case "primary":
@@ -25,9 +25,12 @@ func ParseCommandArguments(arguments []string) *CommandArguments {
 				commandFlags.right = true
 				break
 			}
-		} else {
-			// Command name.
+		} else if i <= 1 {
+			// Command name
 			commandArguments.commandName = commandArgument
+		} else {
+			// Command parameter
+			commandArguments.commandParameters = append(commandArguments.commandParameters, commandArgument)
 		}
 	}
 

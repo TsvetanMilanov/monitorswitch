@@ -1,26 +1,41 @@
 package main
 
-import (
-	"fmt"
-)
+import "fmt"
+import "strconv"
 
 // OnCommand type
 type OnCommand struct {
 }
 
 // Execute executes the command with the provided flags
-func (command *OnCommand) Execute(commandFlags *CommandFlags) {
+func (command *OnCommand) Execute(commandArguments *CommandArguments) {
 	fmt.Println("Switching monitor on...")
 
 	var monitorsService = injector.monitorsService
+	var indexParameter = commandArguments.commandParameters[0]
+	var monitorIndex, err = strconv.Atoi(indexParameter)
+
+	if err != nil {
+		panic(fmt.Sprintf("Index %v is not a valid value for monitor.\n", indexParameter))
+	}
+
+	monitorIndex--
 
 	var allMonitors = monitorsService.GetAllMonitors()
 
-	var monitor = monitorsService.GetMonitor(allMonitors, commandFlags.primary)
-	var referenceMonitor = monitorsService.GetMonitor(allMonitors, !commandFlags.primary)
+	var monitor = monitorsService.GetMonitor(allMonitors, commandArguments.commandFlags.primary)
+	var referenceMonitor = monitorsService.GetMonitor(allMonitors, !commandArguments.commandFlags.primary)
+	if commandArguments.commandFlags.primary {
+		monitor = monitorsService.GetMonitor(allMonitors, commandArguments.commandFlags.primary)
+		referenceMonitor = monitorsService.GetMonitor(allMonitors, !commandArguments.commandFlags.primary)
+	} else {
+		monitor = allMonitors[monitorIndex]
+		referenceMonitor = getClosestMonitor(allMonitors, monitorIndex)
+	}
+
 	var side string
 
-	if commandFlags.left {
+	if commandArguments.commandFlags.left {
 		side = "--left-of"
 	} else {
 		side = "--right-of"
@@ -30,18 +45,18 @@ func (command *OnCommand) Execute(commandFlags *CommandFlags) {
 	fmt.Printf("Monitor %s switched on.\n", monitor.name)
 }
 
-// GetAliases returns the name of the command
+// GetAliases returns the aliases of the command
 func (command *OnCommand) GetAliases() []string {
 	return []string{"on"}
 }
 
-func getMonitor(monitors []*Monitor, shouldGetPrimaryMonitor bool) *Monitor {
-	// TODO: refactor this to work with monitor name
-	for _, monitor := range monitors {
-		if monitor.isPrimary {
-			return monitor
-		}
+func getClosestMonitor(monitors []*Monitor, index int) *Monitor {
+	var previousIndex = index - 1
+	var nextIndex = index + 1
+
+	if previousIndex >= 0 {
+		return monitors[previousIndex]
 	}
 
-	return monitors[len(monitors)-1]
+	return monitors[nextIndex]
 }

@@ -28,7 +28,6 @@ func (service *MonitorsService) SwitchMonitorOff(monitor *Monitor) {
 
 // GetMonitor gets the primary monitor or the first not - primary monitor
 func (service *MonitorsService) GetMonitor(monitors []*Monitor, shouldGetPrimaryMonitor bool) *Monitor {
-	// TODO: refactor this to work with monitor name
 	for _, monitor := range monitors {
 		if shouldGetPrimaryMonitor {
 			if monitor.isPrimary {

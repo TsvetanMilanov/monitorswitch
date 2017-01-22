@@ -12,7 +12,7 @@ func ExecuteCommand(commandArguments *CommandArguments) {
 		var aliases = command.GetAliases()
 		for _, alias := range aliases {
 			if alias == commandArguments.commandName {
-				command.Execute(commandArguments.commandFlags)
+				command.Execute(commandArguments)
 				return
 			}
 		}
