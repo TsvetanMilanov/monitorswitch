@@ -8,12 +8,13 @@ import (
 func ExecuteCommand(commandArguments *CommandArguments) {
 	var commandsRegistry = BuildCommandRegistry()
 
-	for i := 0; i < len(commandsRegistry); i++ {
-		var currentCommand = commandsRegistry[i]
-
-		if currentCommand.GetName() == commandArguments.commandName {
-			currentCommand.Execute(commandArguments.commandFlags)
-			return
+	for _, command := range *commandsRegistry {
+		var aliases = command.GetAliases()
+		for _, alias := range aliases {
+			if alias == commandArguments.commandName {
+				command.Execute(commandArguments.commandFlags)
+				return
+			}
 		}
 	}
 

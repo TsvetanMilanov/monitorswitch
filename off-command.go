@@ -22,7 +22,7 @@ func (command *OffCommand) Execute(commandFlags *CommandFlags) {
 	fmt.Printf("Monitor %s switched off.\n", monitor.name)
 }
 
-// GetName returns the name of the command
-func (command *OffCommand) GetName() string {
-	return "off"
+// GetAliases returns the name of the command
+func (command *OffCommand) GetAliases() []string {
+	return []string{"off"}
 }

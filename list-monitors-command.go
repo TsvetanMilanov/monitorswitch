@@ -17,7 +17,7 @@ func (command *ListMonitorsCommand) Execute(commandFlags *CommandFlags) {
 	}
 }
 
-// GetName returns the name of the command
-func (command *ListMonitorsCommand) GetName() string {
-	return "list-monitors"
+// GetAliases returns the name of the command
+func (command *ListMonitorsCommand) GetAliases() []string {
+	return []string{"list-monitors", "ls"}
 }

@@ -2,6 +2,6 @@ package main
 
 // Command interface
 type Command interface {
-	GetName() string
+	GetAliases() []string
 	Execute(commandFlags *CommandFlags)
 }

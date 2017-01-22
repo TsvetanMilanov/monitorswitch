@@ -20,19 +20,19 @@ func (command *OnCommand) Execute(commandFlags *CommandFlags) {
 	var referenceMonitor = monitorsService.GetMonitor(allMonitors, !commandFlags.primary)
 	var side string
 
-	if commandFlags.right {
-		side = "--right-of"
-	} else {
+	if commandFlags.left {
 		side = "--left-of"
+	} else {
+		side = "--right-of"
 	}
 
 	monitorsService.SwitchMonitorOn(monitor, referenceMonitor, side)
 	fmt.Printf("Monitor %s switched on.\n", monitor.name)
 }
 
-// GetName returns the name of the command
-func (command *OnCommand) GetName() string {
-	return "on"
+// GetAliases returns the name of the command
+func (command *OnCommand) GetAliases() []string {
+	return []string{"on"}
 }
 
 func getMonitor(monitors []*Monitor, shouldGetPrimaryMonitor bool) *Monitor {
