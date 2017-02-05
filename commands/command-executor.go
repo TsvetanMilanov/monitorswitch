@@ -1,8 +1,6 @@
-package main
+package commands
 
-import (
-	"fmt"
-)
+import "fmt"
 
 // ExecuteCommand executes command.
 func ExecuteCommand(commandArguments *CommandArguments) {
@@ -11,12 +9,12 @@ func ExecuteCommand(commandArguments *CommandArguments) {
 	for _, command := range *commandsRegistry {
 		var aliases = command.GetAliases()
 		for _, alias := range aliases {
-			if alias == commandArguments.commandName {
+			if alias == commandArguments.CommandName {
 				command.Execute(commandArguments)
 				return
 			}
 		}
 	}
 
-	panic(fmt.Sprintf("Unknown command %s", commandArguments.commandName))
+	panic(fmt.Sprintf("Unknown command %s", commandArguments.CommandName))
 }

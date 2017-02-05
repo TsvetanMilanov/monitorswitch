@@ -1,8 +1,10 @@
-package main
+package commands
 
 import (
 	"fmt"
 	"strconv"
+
+	"github.com/TsvetanMilanov/monitorswitch/globals"
 )
 
 // OffCommand type
@@ -13,8 +15,8 @@ type OffCommand struct {
 func (command *OffCommand) Execute(commandArguments *CommandArguments) {
 	fmt.Println("Switching monitor off...")
 
-	var monitorsService = injector.monitorsService
-	var indexParameter = commandArguments.commandParameters[0]
+	var monitorsService = globals.GetInjector().MonitorsService
+	var indexParameter = commandArguments.CommandParameters[0]
 	var monitorIndex, err = strconv.Atoi(indexParameter)
 
 	if err != nil {
@@ -25,15 +27,15 @@ func (command *OffCommand) Execute(commandArguments *CommandArguments) {
 
 	var allMonitors = monitorsService.GetAllMonitors()
 
-	var monitor = monitorsService.GetMonitor(allMonitors, commandArguments.commandFlags.primary)
-	if commandArguments.commandFlags.primary {
-		monitor = monitorsService.GetMonitor(allMonitors, commandArguments.commandFlags.primary)
+	var monitor = monitorsService.GetMonitor(allMonitors, commandArguments.CommandFlags.Primary)
+	if commandArguments.CommandFlags.Primary {
+		monitor = monitorsService.GetMonitor(allMonitors, commandArguments.CommandFlags.Primary)
 	} else {
 		monitor = allMonitors[monitorIndex]
 	}
 
 	monitorsService.SwitchMonitorOff(monitor)
-	fmt.Printf("Monitor %s switched off.\n", monitor.name)
+	fmt.Printf("Monitor %s switched off.\n", monitor.Name)
 }
 
 // GetAliases returns the aliases of the command

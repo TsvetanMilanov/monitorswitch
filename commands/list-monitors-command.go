@@ -1,6 +1,10 @@
-package main
+package commands
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/TsvetanMilanov/monitorswitch/globals"
+)
 
 // ListMonitorsCommand type
 type ListMonitorsCommand struct {
@@ -9,11 +13,11 @@ type ListMonitorsCommand struct {
 // Execute executes the command with the provided flags
 func (command *ListMonitorsCommand) Execute(commandArguments *CommandArguments) {
 	fmt.Println("Monitors:")
-	var monitorsService = injector.monitorsService
+	var monitorsService = globals.GetInjector().MonitorsService
 	var monitors = monitorsService.GetAllMonitors()
 
 	for i, monitor := range monitors {
-		fmt.Printf("%d - %s primary: %v\n", i+1, monitor.name, monitor.isPrimary)
+		fmt.Printf("%d - %s primary: %v\n", i+1, monitor.Name, monitor.IsPrimary)
 	}
 }
 

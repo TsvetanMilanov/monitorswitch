@@ -1,16 +1,21 @@
 package main
 
-import "os"
+import (
+	"os"
 
-var injector *Injector
+	"github.com/TsvetanMilanov/monitorswitch/commands"
+	"github.com/TsvetanMilanov/monitorswitch/globals"
+	"github.com/TsvetanMilanov/monitorswitch/utils"
+	"github.com/TsvetanMilanov/monitorswitch/bootstrap"
+)
 
 func main() {
-	injector = bootstrap()
-	var commandArguments = ParseCommandArguments(os.Args)
+	globals.SetupInjector(bootstrap.RunBootstrap)
+	var commandArguments = utils.ParseCommandArguments(os.Args)
 
-	if len(commandArguments.commandName) == 0 {
+	if len(commandArguments.CommandName) == 0 {
 		panic("Command name required")
 	}
 
-	ExecuteCommand(commandArguments)
+	commands.ExecuteCommand(commandArguments)
 }

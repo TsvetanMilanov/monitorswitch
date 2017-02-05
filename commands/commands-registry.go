@@ -1,4 +1,4 @@
-package main
+package commands
 
 // BuildCommandRegistry builds the registry with all commands
 func BuildCommandRegistry() *[]Command {
